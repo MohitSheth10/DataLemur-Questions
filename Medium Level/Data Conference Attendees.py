@@ -1,37 +1,17 @@
 def min_attendees(answers):
-  length=len(answers)
   total=0
-  j=0
-  for i in range(length):
-    if answers[j]==0:
-      total=total+1
-      answers.remove(answers[j])
-    else:
-      j=j+1
-    
-  #return sorted(answers)
-  newanswers=list(set(answers)) 
-  newanswers=sorted(newanswers)
-  #maximum=max(newanswers)
-  length=len(answers)
-  for i in range(0,len(newanswers)):
-    value=newanswers[i] 
-    no1 = answers.count(value)
-    if no1%2==0:
-      if value+1==no1:
-          total=total+no1
-      else:
-          for k in range(no1): 
-              total=total+value
-    else:
-      no1=no1-1
-      if value+1==no1:
-        total=total+no1
-      else:
-        for l in range(no1): 
-          total=total+value
-      # add 2
-      total=total+value+1
-
+  newanswers=sorted(set(answers))
+  for value in newanswers:
+    no1=answers.count(value)       # how many people gave this answer
+    group_size=value+1             # each person with this answer is in a group of value+1 people
+    groups=no1//group_size
+    if no1%group_size!=0:
+      groups=groups+1              # a partly filled group still counts as a full group
+    total=total+groups*group_size
   return total
-  
+answers=[2, 1, 1]
+#Test cases:
+#[2, 1, 1] Expected 5
+#[0, 0, 1] Expected 4
+#[4, 4, 3, 3, 4, 1] Expected 11
+print(min_attendees(answers))
